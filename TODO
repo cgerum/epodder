@@ -3,7 +3,7 @@ Urgent:
 * implement playlist persistence
 * implement podfetching
 * Automatically switch to next song
-* Add and Remove buttons
+* fix resume of ogg files (Perhaps one should use gstreamer directly)
 
 Medium:
 * Only save positions for podcasts and audio books
