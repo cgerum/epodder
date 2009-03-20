@@ -1,3 +1,5 @@
+#ifndef SONG_H
+#define SONG_H
 struct _song_data 
 {
   double position;
@@ -10,3 +12,4 @@ struct _song_data
 };
 
 typedef struct _song_data song_data;
+#endif

@@ -19,8 +19,11 @@ void init_player(Evas *e)
 {
   if (! player){
     player = emotion_object_add(e);
-    
-    emotion_object_init(player, "xine");
+    if(!emotion_object_init(player, "gstreamer"){
+	if(!emotion_object_init(player, "xine"){
+	    elm_exit();
+	  }
+      }
 
     emotion_object_play_set(player, 0);
   }
@@ -66,6 +69,8 @@ void playlist_append_file(char* filename){
   song->position = 0.0;
   song->file = filename;
   song->title = filename;
+  song->artist="test";
+  song->album="test";
 
   playlist_append(song);
 }
@@ -83,8 +88,11 @@ void playlist_pause(){
 void playlist_stop(){
   if(current_song){
     song_data *data = (song_data*)elm_list_item_data_get(current_song);
-    data->position = 0.0; 
+    //data->position = 0.0; 
   }
+
+  current_song = NULL;
+
   emotion_object_play_set(player, 0);
 }
 
@@ -101,9 +109,11 @@ void playlist_play(){
   }
 
   song_data *data = (song_data*)elm_list_item_data_get(current_song);
+  
   emotion_object_file_set(player, data->file);
+  printf("playing %s at %f\n", data->title, data->position);
   emotion_object_position_set(player, data->position);
-
+  printf("playing %s at %f\n", data->title, data->position);
   emotion_object_play_set(player, 1);
 }
 
@@ -174,6 +184,8 @@ Eet_Data_Descriptor *playlist_des_get()
   return playlist_des;
 }
 
+
+
 void playlist_serialize()
 {
   Eet_File *pl_file = NULL;
@@ -202,6 +214,8 @@ void playlist_serialize()
 	song_data *data;
 	data = (song_data*)elm_list_item_data_get(item);
 	encode = eina_list_append(encode, data);
+
+	printf("Encoding %f, %s, %s, %s \n", data->position, data->title, data->album, data->artist, data->file);
       }
   }
   ph.playlist = encode;
@@ -254,4 +268,16 @@ void playlist_deserialize()
   
 
   eet_close(pl_file);
+}
+
+song_data* playlist_current_song_data_get()
+{
+  song_data *data = NULL;
+  if(current_song)
+    {
+      data = (song_data*)elm_list_item_data_get(current_song);
+      data->position = emotion_object_position_get(player);
+    }
+
+  return data;
 }

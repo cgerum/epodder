@@ -8,6 +8,7 @@
 #include "playlist.h"
 #include "podcasts.h"
 #include "config_files.h"
+#include "song.h"
 
 static void
 destroy_main_window(void *data, Evas_Object *obj, void *event_info)
@@ -49,6 +50,40 @@ void pl_add_bt_cb(void *data, Evas_Object *obj, void *event_info)
 void pl_rem_bt_cb(void *data, Evas_Object *obj, void *event_info)
 {
   playlist_remove_selected();
+}
+
+int *update_time_label(void* time_label)
+{
+  char *data;
+  song_data *song;
+  data = malloc(sizeof(char)*20);
+  song = playlist_current_song_data_get();
+
+  if(song){
+    double position;
+    int hour, min, sec;
+
+    position = song->position;
+
+    hour = round(position / 3600);
+    min = round(position);
+    sec = round(position);
+
+    sprintf(data, "%i:%i:%i/--:--:--", hour, min, sec);
+    elm_label_label_set((Evas_Object*)time_label, data);
+  }else{
+    elm_label_label_set((Evas_Object*)time_label, "--:--:--/--:--:--");
+  }
+  free(data);
+  return 1;
+}
+
+
+static void init_main_timers(void* time_label)
+{
+  Ecore_Timer *update_song_timer;
+
+  update_song_timer = ecore_timer_add(1.0, update_time_label, time_label);
 }
 
 static void init_main_window()
@@ -140,6 +175,8 @@ static void init_main_window()
 
   evas_object_resize(win, 480, 640);
   evas_object_show(win); 
+
+  init_main_timers((void*)time_lb);
 
   podcast_win_show();
 }
