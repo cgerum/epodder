@@ -1,0 +1,15 @@
+Urgent:
+* find a good name
+* implement playlist persistence
+* implement podfetching
+* Automatically switch to next song
+* Add and Remove buttons
+
+Medium:
+* Only save positions for podcasts and audio books
+* better software design
+* Only show media files in filedialog
+
+Sometimes:
+* Handle tags
+* Media Library
