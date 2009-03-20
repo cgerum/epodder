@@ -2,8 +2,12 @@
 #include <Emotion.h>
 #include <Evas.h>
 
+#include <stdlib.h>
+#include <stdio.h>
+
 #include "playlist.h"
 #include "podcasts.h"
+#include "config_files.h"
 
 static void
 destroy_main_window(void *data, Evas_Object *obj, void *event_info)
@@ -12,6 +16,7 @@ destroy_main_window(void *data, Evas_Object *obj, void *event_info)
   playlist_serialize();
   elm_exit(); /* exit the program's main loop that runs in elm_run() */
 }
+
 
 typedef struct _Pginfo Pginfo;
 
@@ -147,6 +152,7 @@ static void init_main_window()
 EAPI int
 elm_main(int argc, char **argv)
 {
+  init_files();
    /* put ere any init specific to this app like parsing args etc. */
    init_main_window(); /* create main window */
    elm_run(); /* and run the program now  and handle all events etc. */

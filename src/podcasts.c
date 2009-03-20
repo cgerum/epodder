@@ -1,6 +1,39 @@
 #include "podcasts.h"
 #include "playlist.h"
+#include "song.h"
 
+struct _podcasts_data
+{
+  Eina_List *podcasts;
+};
+
+typedef struct _podcasts_data podcasts_data;
+
+struct _podcast_data
+{
+  char *title;
+  char *author;
+  Eina_List *episodes;
+};
+
+void podcast_add(char *url)
+{
+  
+}
+
+void add_bt_cb(void *data, Evas_Object *obj, void *event_info)
+{
+  char *url = "http://feeds.feedburner.com/bitsundso/audio?format=mp3";
+  podcast_add(url);
+}
+
+void refresh_bt_cb(void *data, Evas_Object *obj, void *event_info)
+{
+  
+}
+void download_bt_cb(void *data, Evas_Object *obj, void *event_info)
+{
+}
 
 
 int podcast_win_show()
@@ -48,6 +81,11 @@ int podcast_win_show()
   elm_box_pack_end(bt_bx, add_bt);
   elm_box_pack_end(bt_bx, refresh_bt);
   elm_box_pack_end(bt_bx, download_bt);
+
+  evas_object_smart_callback_add(add_bt, "clicked", add_bt_cb, NULL);
+  evas_object_smart_callback_add(refresh_bt, "clicked", refresh_bt_cb, NULL);
+  evas_object_smart_callback_add(download_bt, "clicked", download_bt_cb, NULL);
+  
 
   evas_object_show(add_bt);
   evas_object_show(refresh_bt);

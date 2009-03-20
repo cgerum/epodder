@@ -1,10 +1,14 @@
 #include "playlist.h"
 #include "song.h"
+#include "config_files.h"
+
 #include <Emotion.h>
 #include <stdio.h>
 #include <Eet.h>
 
-#define savefile "/home/christoph/.epodder"
+
+
+#define savefile config_file_get("data.eet")
 
 Evas_Object* playlist = NULL;
 Evas_Object* player = NULL; 
