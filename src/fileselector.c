@@ -65,7 +65,7 @@ load_files(Evas_Object *li, const char *dir)
              evas_object_show(ic);
           }
         /* sort the  file list we got - alphabetically (ascii-wise) */
-        eina_list_sort(files, 10, sort_callback);
+        //eina_list_sort(files, 10, sort_callback);
         /* make sure we are at the list start */
         //ecore_list_first_goto(files);
         /* walk the file list for the dir */
