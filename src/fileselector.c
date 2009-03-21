@@ -25,7 +25,7 @@ load_files(Evas_Object *li, const char *dir)
    printf("dir: %s\n", dir);
 
    /* if no dir is given (NULL) make it "." */
-   if (!dir) dir = "~/Music";
+   if (!dir) dir = ".";
    /* if the dir is empty ("") then we must be in "/" (/
    else if (dir[0] == 0) dir = "/";
    /* while here are items in the list - delete them */
@@ -309,7 +309,7 @@ file_dlg_show()
    /* and when clicked - run "on_cancel" - pass list as data param */
    evas_object_smart_callback_add(bt, "clicked", on_cancel, li);
  
-   load_files(li, "/home/christoph/Music");
+   load_files(li, ".");
 
    /* force the window size to 300x300 otherwise list is at min size - that
     * is tiny */
