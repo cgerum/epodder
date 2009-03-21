@@ -1,24 +1,90 @@
 #include "podcasts.h"
 #include "playlist.h"
 #include "song.h"
+#include <mrss.h>
 
-struct _podcasts_data
+#include <string.h>
+#include <Elementary.h>
+#include <Eina.h>
+
+struct _podcasts_struct
 {
-  Eina_List *podcasts;
+  Eina_List *feeds;
 };
 
-typedef struct _podcasts_data podcasts_data;
+typedef struct _podcasts_struct podcasts_struct;
 
 struct _podcast_data
 {
   char *title;
-  char *author;
+  char *feed;
   Eina_List *episodes;
 };
 
+typedef struct _podcast_data podcast_data;
+
+struct _episode_data
+{
+  char *url;
+  int new;
+  int downloaded;
+  char *pub_data;
+  song_data *data;
+};
+
+typedef struct _episode_data episode_data;
+
+podcasts_struct *podcasts = NULL;
+
+void init_podcasts()
+{
+  if(!podcasts)
+    {
+      podcasts = malloc(sizeof(podcasts_struct));
+      podcasts->feeds = NULL;
+    }
+}
+
 void podcast_add(char *url)
 {
+  char *tmp;
+  mrss_item_t *item;
+  mrss_t *feed;
+  mrss_error_t error;
+  podcast_data *new_podcast;
+
+  error = mrss_parse_url(url, &feed);
+  if(error)
+    {
+      printf("download failed: %s", mrss_strerror(error));
+      return;
+    }
+
+  if(!podcasts)
+    init_podcasts();
+
+  new_podcast = malloc(sizeof(podcast_data));
+  printf("title: %s\n", feed->title);
   
+  new_podcast->feed = url;
+  new_podcast->title = strdup(feed->title);
+  new_podcast->episodes = NULL;
+
+  podcasts->feeds = eina_list_append(podcasts->feeds, new_podcast);
+
+  item = feed->item;
+  while(item){
+    episode_data *new_episode = malloc(sizeof(episode_data));
+    song_data       *new_song = malloc(sizeof(song_data));
+    fprintf (stdout, "\tpubDate: %s\n", item->pubDate);
+    fprintf (stdout, "\tauthor: %s\n", item->author);
+    fprintf (stdout, "\tenclosure: %s\n", item->enclosure);
+    fprintf (stdout, "\tenclosure_url: %s\n", item->enclosure_url);
+
+    item = item->next;
+  }
+  
+  mrss_free(feed);
 }
 
 void add_bt_cb(void *data, Evas_Object *obj, void *event_info)

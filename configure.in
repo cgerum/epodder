@@ -17,7 +17,8 @@ AC_C_CONST
 
 PKG_CHECK_MODULES([EPODDER], [
    elementary,
-   emotion
+   emotion,
+   mrss
    ])
 
 AC_OUTPUT([
