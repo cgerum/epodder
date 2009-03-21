@@ -1,11 +1,10 @@
 #include "playlist.h"
 #include "song.h"
 #include "config_files.h"
+#include "player.h"
 
-#include <Emotion.h>
 #include <stdio.h>
 #include <Eet.h>
-
 
 
 #define savefile config_file_get("data.eet")
@@ -15,22 +14,6 @@ Evas_Object* player = NULL;
 
 Elm_List_Item* current_song = NULL;
 
-void init_player(Evas *e)
-{
-  if (! player){
-    player = emotion_object_add(e);
-    if(!emotion_object_init(player, "xine"))
-      {
-	if(!emotion_object_init(player, "gstreamer"))
-	  {
-	    elm_exit();
-	  
-	  }
-      }
-
-    emotion_object_play_set(player, 0);
-  }
-}
    
 
 Evas_Object* playlist_add(Evas_Object *win)
@@ -82,21 +65,21 @@ void playlist_pause(){
   if(current_song){
     song_data *data = (song_data*)elm_list_item_data_get(current_song);
     
-    data->position = emotion_object_position_get(player); 
+    data->position = player_position_get(); 
     printf("Pausing at: %f\n", data->position);
   }
-  emotion_object_play_set(player, 0);
+  player_state_set(PLAYER_STATE_STOP);
 }
 
 void playlist_stop(){
   if(current_song){
     song_data *data = (song_data*)elm_list_item_data_get(current_song);
-    //data->position = 0.0; 
+    data->position = 0.0; 
   }
 
   current_song = NULL;
 
-  emotion_object_play_set(player, 0);
+  player_state_set(PLAYER_STATE_STOP);
 }
 
 void playlist_play(){
@@ -113,13 +96,11 @@ void playlist_play(){
 
   song_data *data = (song_data*)elm_list_item_data_get(current_song);
   
-  emotion_object_file_set(player, data->file);
+  player_file_load(data->file);
   printf("playing %s at %f\n", data->title, data->position);
-  emotion_object_position_set(player, data->position);
-  //emotion_object_position_set(player, data->position);
+  player_position_set(data->position);
   printf("playing %s at %f\n", data->title, data->position);
-  emotion_object_play_set(player, 1);
-  //emotion_object_play_set(player, 1);
+  player_state_set(PLAYER_STATE_PLAYING);
 }
 
 
@@ -267,7 +248,7 @@ song_data* playlist_current_song_data_get()
   if(current_song)
     {
       data = (song_data*)elm_list_item_data_get(current_song);
-      data->position = emotion_object_position_get(player);
+      data->position = player_position_get();
     }
 
   return data;

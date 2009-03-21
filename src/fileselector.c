@@ -102,7 +102,7 @@ load_files(Evas_Object *li, const char *dir)
                }
           }
         /* free the file list */
-        eina_list_free(files);
+        //eina_list_free(files);
      }
    /* tell the list widget we are done messing with it - and go go go! */
    elm_list_go(li);

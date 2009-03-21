@@ -17,8 +17,8 @@ AC_C_CONST
 
 PKG_CHECK_MODULES([EPODDER], [
    elementary,
-   emotion,
-   mrss
+   mrss,
+   gstreamer-0.10
    ])
 
 AC_OUTPUT([
