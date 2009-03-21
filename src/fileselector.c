@@ -119,7 +119,7 @@ on_ok(void *data, Evas_Object *obj, void *event_info)
      {
         /* if there is a selected item - get the diata, i'ts the string
          * we added to the item, print it */
-        char *path = (char *)elm_list_item_data_get(it);
+       char *path = ecore_file_realpath((char *)elm_list_item_data_get(it));
         playlist_append_file(path);
      }
    /* Close window */
