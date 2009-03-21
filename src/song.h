@@ -12,4 +12,6 @@ struct _song_data
 };
 
 typedef struct _song_data song_data;
+
+Eet_Data_Descriptor *song_des_get();
 #endif

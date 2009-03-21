@@ -19,19 +19,22 @@ void init_player(Evas *e)
 {
   if (! player){
     player = emotion_object_add(e);
-    if(!emotion_object_init(player, "gstreamer"){
-	if(!emotion_object_init(player, "xine"){
+    if(!emotion_object_init(player, "xine"))
+      {
+	if(!emotion_object_init(player, "gstreamer"))
+	  {
 	    elm_exit();
+	  
 	  }
       }
 
     emotion_object_play_set(player, 0);
   }
 }
+   
 
 Evas_Object* playlist_add(Evas_Object *win)
 { 
-  //The playlist is a singleton not sure if this is a good idea.
   if (! playlist)
     {
       playlist = elm_list_add(win);
@@ -113,8 +116,10 @@ void playlist_play(){
   emotion_object_file_set(player, data->file);
   printf("playing %s at %f\n", data->title, data->position);
   emotion_object_position_set(player, data->position);
+  //emotion_object_position_set(player, data->position);
   printf("playing %s at %f\n", data->title, data->position);
   emotion_object_play_set(player, 1);
+  //emotion_object_play_set(player, 1);
 }
 
 
@@ -153,21 +158,7 @@ Eet_Data_Descriptor *playlist_des_get()
 {
   Eet_Data_Descriptor *song_data_des, *playlist_des;
 
-  song_data_des = eet_data_descriptor_new("song_data", sizeof(song_data),
-					  eina_list_next,
-					  eina_list_append,
-					  eina_list_data_get,
-					  eina_list_free,
-					  eina_hash_foreach,
-					  NULL,
-					  NULL);
-
-  
-  EET_DATA_DESCRIPTOR_ADD_BASIC(song_data_des, song_data, "position", position, EET_T_DOUBLE);
-  EET_DATA_DESCRIPTOR_ADD_BASIC(song_data_des, song_data, "title", title, EET_T_STRING);
-  EET_DATA_DESCRIPTOR_ADD_BASIC(song_data_des, song_data, "album", album, EET_T_STRING);
-  EET_DATA_DESCRIPTOR_ADD_BASIC(song_data_des, song_data, "artist", artist, EET_T_STRING);
-  EET_DATA_DESCRIPTOR_ADD_BASIC(song_data_des, song_data, "file", file, EET_T_STRING);
+  song_data_des = song_des_get();
 
   
   playlist_des = eet_data_descriptor_new("playlist_holder", sizeof(playlist_holder),
