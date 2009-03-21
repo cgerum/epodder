@@ -8,7 +8,7 @@
 
 void player_state_set(int state);
 void player_file_load(char *file);
-void init_player();
+void init_player(int *argc, char ***argv);
 void player_position_set(double position);
 double player_position_get();
 

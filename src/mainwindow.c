@@ -189,6 +189,8 @@ static void init_main_window()
 EAPI int
 elm_main(int argc, char **argv)
 {
+  init_player(&argc, &argv);
+
   init_files();
    /* put ere any init specific to this app like parsing args etc. */
    init_main_window(); /* create main window */

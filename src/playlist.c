@@ -29,8 +29,6 @@ Evas_Object* playlist_add(Evas_Object *win)
       evas_object_size_hint_align_set(playlist, -1.0, -1.0);
       evas_object_size_hint_weight_set(playlist, 1.0, 1.0);
     }
-  
-  init_player(evas_object_evas_get(playlist));
       
   return playlist;
 }

@@ -83,20 +83,18 @@ poll_gst(void *data)
 
 
 
-void init_player()
+void init_player(int *argc, char ***argv)
 {
 
   if(!gst_player)
     {
-      int argc = 0;
-      char **argv = NULL;
       
       Ecore_Timer *poll_gst_timer;
       
       
       poll_gst_timer = ecore_timer_add(1.0, poll_gst, NULL);
       
-      gst_init(&argc, &argv);
+      gst_init(argc, argv);
       gst_player = _pipeline_instance();
       
       printf("gstreamer playing\n");
