@@ -3,6 +3,7 @@
 struct _song_data 
 {
   double position;
+  double length;
 
   char* title;
   char* album;

@@ -60,16 +60,22 @@ int *update_time_label(void* time_label)
   song = playlist_current_song_data_get();
 
   if(song){
-    double position;
+    double position, length;
     int hour, min, sec;
+    int len_h, len_m, len_s;
 
     position = song->position;
+    length = song->length;
 
-    hour = round(position / 3600);
-    min = round(position);
-    sec = round(position);
+    hour = (int)(position / 3600);
+    min = ((int)position % 3600 / 60);
+    sec = ((int)position % 60);
 
-    sprintf(data, "%i:%i:%i/--:--:--", hour, min, sec);
+    len_h = (int)(length / 3600);
+    len_m = ((int)length % 3600 / 60);
+    len_s = ((int)length % 60);
+
+    sprintf(data, "%02i:%02i:%02i/%02i:%02i:%02i", hour, min, sec, len_h, len_m, len_s);
     elm_label_label_set((Evas_Object*)time_label, data);
   }else{
     elm_label_label_set((Evas_Object*)time_label, "--:--:--/--:--:--");
@@ -91,6 +97,7 @@ static void init_main_window()
   Evas_Object *win, *bg, *pg, *player_bx, *main_bx, *play_bt, *pause_bt, *stop_bt;
   Evas_Object *time_lb, *playlist, *plctrl_bx;
   Evas_Object *pl_add_bt, *pl_rem_bt;
+  Evas_Object  *seek_sl;
   static Pginfo player;
    
 
@@ -148,6 +155,18 @@ static void init_main_window()
   elm_box_pack_end(player_bx, time_lb);
 
   evas_object_show(time_lb);
+
+  seek_sl = elm_slider_add(win);
+  elm_slider_label_set(seek_sl, "Seek");
+  elm_slider_span_size_set(seek_sl, 300);
+  elm_slider_indicator_format_set(seek_sl, "%3.0f");
+  elm_slider_min_max_set(seek_sl, -30, 30);
+  elm_slider_value_set(seek_sl, 0);
+  evas_object_size_hint_align_set(seek_sl, 0.5, 0.5);
+  evas_object_size_hint_weight_set(seek_sl, 1.0, 0.0);
+  elm_box_pack_end(main_bx, seek_sl);
+  evas_object_show(seek_sl);
+   
 
   playlist = playlist_add(win);
   elm_box_pack_end(main_bx, playlist);

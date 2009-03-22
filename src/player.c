@@ -138,5 +138,40 @@ void player_position_set(double position)
 
 double player_position_get()
 {
-  return 0.0;
+
+  GstFormat fmt = GST_FORMAT_TIME;
+  gint64 pos;
+  double double_pos;
+  
+
+  gst_element_query_position (gst_player, &fmt, &pos);
+
+  double_pos = pos/(double)1000000000.0;
+
+  //printf("pos: %f\n", double_pos);
+
+  if (double_pos > 0)
+    return double_pos;
+  else
+    return (double)0.0; 
+}
+
+double player_length_get()
+{
+
+  GstFormat fmt = GST_FORMAT_TIME;
+  gint64 len;
+  double double_len;
+  
+
+  gst_element_query_duration (gst_player, &fmt, &len);
+
+  double_len = len/(double)1000000000.0;
+
+  //printf("length: %f\n", double_len);
+
+  if (double_len > 0)
+    return double_len;
+  else
+    return (double)0.0; 
 }

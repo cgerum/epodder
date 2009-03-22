@@ -51,6 +51,7 @@ void playlist_append_file(char* filename){
   song_data *song = (song_data*) malloc(sizeof(song_data));
   
   song->position = 0.0;
+  song->length = 0.0;
   song->file = filename;
   song->title = filename;
   song->artist="test";
@@ -247,6 +248,9 @@ song_data* playlist_current_song_data_get()
     {
       data = (song_data*)elm_list_item_data_get(current_song);
       data->position = player_position_get();
+      if(data->length == 0.0)
+	data->length = player_length_get();
+      //printf("length3: %f\n", data->length);
     }
 
   return data;

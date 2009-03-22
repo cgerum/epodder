@@ -18,6 +18,7 @@ Eet_Data_Descriptor *song_des_get()
 
   
   EET_DATA_DESCRIPTOR_ADD_BASIC(song_data_des, song_data, "position", position, EET_T_DOUBLE);
+  EET_DATA_DESCRIPTOR_ADD_BASIC(song_data_des, song_data, "length", length, EET_T_DOUBLE);
   EET_DATA_DESCRIPTOR_ADD_BASIC(song_data_des, song_data, "title", title, EET_T_STRING);
   EET_DATA_DESCRIPTOR_ADD_BASIC(song_data_des, song_data, "album", album, EET_T_STRING);
   EET_DATA_DESCRIPTOR_ADD_BASIC(song_data_des, song_data, "artist", artist, EET_T_STRING);
